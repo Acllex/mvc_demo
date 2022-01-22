@@ -196,10 +196,10 @@ template {
 }
 
 #four div {
-  margin-top: 5vw;
+  margin-top: 2vw;
   margin-left: 5vw;
-  width: 20vw;
-  height: 20vw;
+  width: 12vw;
+  height: 12vw;
   border-radius: 50%;
   border: 1px solid red;
 }

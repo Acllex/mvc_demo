@@ -11305,6 +11305,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var $value = (0, _jquery.default)('#one>div>span');
 var operate = {
+  "init": function init() {
+    return $value.text(localStorage.getItem('value') === null ? '100' : localStorage.getItem('value'));
+  },
   "+": function _() {
     return $value.text(Number($value.text()) + 1);
   },
@@ -11318,8 +11321,10 @@ var operate = {
     return $value.text(Number($value.text()) / 2);
   }
 };
+operate.init();
 (0, _jquery.default)('#one>button').on('click', function (e) {
-  var x = operate[e.target.innerText]();
+  operate[e.target.innerText]();
+  localStorage.setItem('value', $value.text());
 });
 },{"jquery":"node_modules/jquery/dist/jquery.js","./one.css":"src/one.css"}],"src/two.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -11335,11 +11340,24 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var select = {
+  init: function init() {
+    var $tabBar = (0, _jquery.default)('#two>ul').children().eq(0).children();
+    var $contents = (0, _jquery.default)('#two>ul').children().eq(1).children();
+    var index = localStorage.getItem('tabBarIndex');
+    index === null ? $tabBar.eq(0).addClass('select') && $contents.eq(0).addClass('show') : $tabBar.eq(index).addClass('select') && $contents.eq(index).addClass('show');
+  },
+  change: function change(e) {
+    (0, _jquery.default)(e.target).addClass('select').siblings().removeClass('select');
+    var index = (0, _jquery.default)(e.target).index();
+    (0, _jquery.default)(e.target).parent().next().children().removeClass('show');
+    (0, _jquery.default)(e.target).parent().next().children().eq(index).addClass('show');
+    localStorage.setItem('tabBarIndex', index);
+  }
+};
+select.init();
 (0, _jquery.default)('#two').on('click', 'li>div', function (e) {
-  (0, _jquery.default)(e.target).addClass('select').siblings().removeClass('select');
-  var index = (0, _jquery.default)(e.target).index();
-  (0, _jquery.default)(e.target).parent().next().children().removeClass('show');
-  (0, _jquery.default)(e.target).parent().next().children().eq(index).addClass('show');
+  return select.change(e);
 });
 },{"./two.css":"src/two.css","jquery":"node_modules/jquery/dist/jquery.js"}],"src/three.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -11357,6 +11375,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _jquery.default)('#three').on('click', 'div', function (e) {
   (0, _jquery.default)(e.target).toggleClass('active');
+  console.log((0, _jquery.default)(e.target).hasClass('active'));
 });
 },{"jquery":"node_modules/jquery/dist/jquery.js","./three.css":"src/three.css"}],"src/four.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -11419,7 +11438,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55833" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56052" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
